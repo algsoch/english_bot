@@ -22,6 +22,7 @@ class SpeechService {
     
     // Check for speech recognition support with mobile-specific checks
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    this.SpeechRecognition = SpeechRecognition; // Store constructor in class
     this.isSupported = !!SpeechRecognition;
     
     // Additional mobile checks
