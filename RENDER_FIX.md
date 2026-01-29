@@ -1,9 +1,25 @@
 # 🚨 RENDER DASHBOARD SETTINGS - MUST UPDATE THESE
 
-## ⚠️ Current Problem
-Render is still using old settings:
-- ❌ Build Command: `npm install` (wrong)
-- ❌ Publish Directory: `build` (wrong)
+## ⚠️ PROGRESS UPDATE
+✅ Publish Directory: Updated to `dist` (GOOD!)  
+❌ Build Command: Still `npm install` (NEEDS FIX!)
+
+## 🎯 THE ONE REMAINING FIX NEEDED
+
+### In Render Dashboard Settings:
+**Build Command**: Change from `npm install` to `npm run build`
+
+This is the ONLY remaining issue. The logs show:
+```
+==> Running build command 'npm install'...    ❌ WRONG
+==> Publish directory dist does not exist!    ❌ Because npm install doesn't build
+```
+
+Should be:
+```
+==> Running build command 'npm run build'...  ✅ CORRECT
+==> Build created dist directory              ✅ Will work
+```
 
 ## ✅ Required Changes in Render Dashboard
 
@@ -12,33 +28,21 @@ Render is still using old settings:
 2. Click on your `english_bot` service
 3. Go to **Settings** tab
 
-### Step 2: Update These Exact Settings
-
+### Step 2: Update ONLY the Build Command
 **Build & Deploy**:
-- **Root Directory**: `frontend`
-- **Build Command**: `npm run build`
-- **Publish Directory**: `dist`
+- **Root Directory**: `frontend` ✅ (already correct)
+- **Build Command**: `npm run build` ❌ (CHANGE THIS!)
+- **Publish Directory**: `dist` ✅ (already correct)
 
-### Step 3: Environment Variables (if not set)
-Add these in **Environment** tab:
-```
-VITE_API_URL=https://your-backend-service.onrender.com
-VITE_WS_URL=wss://your-backend-service.onrender.com
-```
-
-### Step 4: Save & Redeploy
+### Step 3: Save & Redeploy
 1. Click **Save Changes**
 2. Render will automatically redeploy with correct settings
 
 ## 🎯 Expected Result
-After updating settings, the build should:
+After changing build command to `npm run build`:
 1. Run `npm run build` ✅
 2. Create `dist` directory ✅  
 3. Deploy successfully ✅
 
-## 📋 Double-Check List
-- [ ] Root Directory: `frontend`
-- [ ] Build Command: `npm run build`
-- [ ] Publish Directory: `dist`
-- [ ] Environment variables set
-- [ ] Saved and redeployed
+## 📋 Final Check - Only This One Thing Left:
+- [ ] **Build Command**: `npm run build` (CHANGE THIS!)
