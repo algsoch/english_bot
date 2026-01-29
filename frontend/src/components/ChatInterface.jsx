@@ -8,6 +8,8 @@ import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createConversation } from '../services/api';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 export default function ChatInterface() {
   const navigate = useNavigate();
   const { 
@@ -60,7 +62,7 @@ export default function ChatInterface() {
   useEffect(() => {
     if (user?.id) {
       // Fetch conversations
-      fetch(`/api/users/${user.id}/conversations`)
+      fetch(`${API_BASE_URL}/api/users/${user.id}/conversations`)
         .then(res => res.json())
         .then(data => {
           setConversations(data || []);
@@ -68,7 +70,7 @@ export default function ChatInterface() {
         .catch(err => console.error('Failed to load conversations:', err));
       
       // Fetch learning insights
-      fetch(`/api/users/${user.id}/insights`)
+      fetch(`${API_BASE_URL}/api/users/${user.id}/insights`)
         .then(res => res.json())
         .then(data => {
           setLearningInsights(data);
@@ -83,7 +85,7 @@ export default function ChatInterface() {
     wsService.connect(user.id, currentConversation.id)
       .then(() => {
         // Load conversation history
-        fetch(`/api/conversations/${currentConversation.id}/messages`)
+        fetch(`${API_BASE_URL}/api/conversations/${currentConversation.id}/messages`)
           .then(res => res.json())
           .then(history => {
             if (history && history.length > 0) {
@@ -400,7 +402,7 @@ export default function ChatInterface() {
 
   const startNewConversation = async () => {
     try {
-      const res = await fetch(`/api/conversations?user_id=${user.id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/conversations?user_id=${user.id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mode: mode || 'free_talk' })
@@ -423,7 +425,7 @@ export default function ChatInterface() {
       
       const topicName = customTopicText || modes.find(m => m.id === newMode)?.name || 'Free Talk';
       
-      const res = await fetch(`/api/conversations?user_id=${user.id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/conversations?user_id=${user.id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
