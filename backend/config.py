@@ -29,11 +29,13 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "default-secret-change-in-production"
     
     # CORS - now as a single string that we'll split
-    ALLOWED_ORIGINS: str = "http://localhost:5173,http://localhost:3000,https://english-bot-ouso.onrender.com" = "http://localhost:5173,http://localhost:3000,http://localhost:8000,https://english-bot-ouso.onrender.com" = "https://english-bot-ouso.onrender.com,http://localhost:5173,http://localhost:3000,http://localhost:8000"
+    ALLOWED_ORIGINS: str = "http://localhost:5173,http://localhost:3000,https://english-bot-ouso.onrender.com"
     
     model_config = SettingsConfigDict(
-        env_file=".env",
-        case_sensitive=True
+        env_file=(".env", ".env.local"),
+        env_file_encoding="utf-8", 
+        case_sensitive=True,
+        extra="ignore"
     )
     
     @property
