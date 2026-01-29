@@ -44,6 +44,13 @@ export default function Home() {
       return;
     }
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -76,7 +83,20 @@ export default function Home() {
       
     } catch (error) {
       console.error('Setup error:', error);
-      toast.error('Failed to start. Try again.');
+      
+      // Handle specific error types
+      if (error.response?.status === 400) {
+        const errorMsg = error.response.data?.detail || 'Invalid input. Please check your details.';
+        if (errorMsg.toLowerCase().includes('email')) {
+          toast.error('Email address is already registered or invalid');
+        } else {
+          toast.error(errorMsg);
+        }
+      } else if (error.response?.status === 422) {
+        toast.error('Please enter a valid email address');
+      } else {
+        toast.error('Failed to start. Please check your internet connection.');
+      }
     } finally {
       setLoading(false);
     }

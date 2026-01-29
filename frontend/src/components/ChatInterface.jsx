@@ -879,19 +879,19 @@ export default function ChatInterface() {
                 </button>
               </div>
 
-              <div style={{ padding: '16px 20px' }}>
+              <div style={{ padding: isMobile ? '16px' : '20px 24px' }}>
                 {/* Personality Selection */}
                 <div style={{ marginBottom: '24px' }}>
-                  <h3 style={{ color: '#fff', fontSize: '15px', marginBottom: '12px', fontWeight: 600 }}>
+                  <h3 style={{ color: '#fff', fontSize: isMobile ? '16px' : '18px', marginBottom: '12px', fontWeight: 600 }}>
                     AI Personality
                   </h3>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(3, 1fr)' : 'repeat(3, 1fr)', gap: isMobile ? '8px' : '12px' }}>
                     {personalities.map(p => (
                       <button
                         key={p.id}
                         onClick={() => setPersonality(p.id)}
                         style={{
-                          padding: '14px 10px',
+                          padding: isMobile ? '12px 6px' : '16px 12px',
                           backgroundColor: personality === p.id ? '#2563eb' : '#2d2d2d',
                           border: personality === p.id ? '2px solid #3b82f6' : '2px solid transparent',
                           borderRadius: '12px',
@@ -900,7 +900,8 @@ export default function ChatInterface() {
                           display: 'flex',
                           flexDirection: 'column',
                           alignItems: 'center',
-                          gap: '6px'
+                          gap: '6px',
+                          minHeight: isMobile ? '80px' : '90px'
                         }}
                       >
                         <p.icon size={22} />
@@ -912,16 +913,16 @@ export default function ChatInterface() {
 
                 {/* Topic Selection */}
                 <div style={{ marginBottom: '24px' }}>
-                  <h3 style={{ color: '#fff', fontSize: '15px', marginBottom: '12px', fontWeight: 600 }}>
+                  <h3 style={{ color: '#fff', fontSize: isMobile ? '16px' : '18px', marginBottom: '12px', fontWeight: 600 }}>
                     Change Topic
                   </h3>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', gap: isMobile ? '8px' : '12px' }}>
                     {modes.map(m => (
                       <button
                         key={m.id}
                         onClick={() => changeTopic(m.id)}
                         style={{
-                          padding: '14px',
+                          padding: isMobile ? '12px' : '16px',
                           backgroundColor: mode === m.id ? '#2563eb' : '#2d2d2d',
                           border: mode === m.id ? '2px solid #3b82f6' : '2px solid transparent',
                           borderRadius: '12px',
@@ -929,8 +930,9 @@ export default function ChatInterface() {
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
-                          gap: '10px',
-                          textAlign: 'left'
+                          gap: isMobile ? '8px' : '12px',
+                          textAlign: 'left',
+                          fontSize: isMobile ? '14px' : '15px'
                         }}
                       >
                         <m.icon size={20} />
@@ -942,18 +944,19 @@ export default function ChatInterface() {
 
                 {/* Custom Topic */}
                 <div style={{ marginBottom: '24px' }}>
-                  <h3 style={{ color: '#fff', fontSize: '15px', marginBottom: '12px', fontWeight: 600 }}>
+                  <h3 style={{ color: '#fff', fontSize: isMobile ? '16px' : '18px', marginBottom: '12px', fontWeight: 600 }}>
                     Custom Topic
                   </h3>
-                  <div style={{ display: 'flex', gap: '10px' }}>
+                  <div style={{ display: 'flex', gap: isMobile ? '8px' : '12px', flexDirection: isMobile ? 'column' : 'row' }}>
                     <input
                       type="text"
                       value={customTopic}
                       onChange={(e) => setCustomTopic(e.target.value)}
                       placeholder="E.g., Job interview, Dating, Movies..."
                       style={{
-                        flex: 1,
-                        padding: '14px 16px',
+                        flex: isMobile ? 'none' : 1,
+                        width: isMobile ? '100%' : 'auto',
+                        padding: isMobile ? '12px 14px' : '14px 16px',
                         backgroundColor: '#2d2d2d',
                         border: '1px solid #444',
                         borderRadius: '12px',
@@ -966,7 +969,8 @@ export default function ChatInterface() {
                     <button
                       onClick={startCustomTopic}
                       style={{
-                        padding: '14px 20px',
+                        width: isMobile ? '100%' : 'auto',
+                        padding: isMobile ? '12px' : '14px 20px',
                         backgroundColor: '#2563eb',
                         border: 'none',
                         borderRadius: '12px',
