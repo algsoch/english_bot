@@ -13,6 +13,7 @@ export default function Home() {
   
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [level, setLevel] = useState('intermediate');
   const [selectedMode, setSelectedMode] = useState('free_talk');
   const [personality, setPersonality] = useState('teacher');
@@ -38,16 +39,47 @@ export default function Home() {
     { id: 'travel', name: 'Travel', icon: Plane, desc: 'Travel situations', color: '#06b6d4' },
   ];
 
-  const handleStart = async () => {
-    if (!name.trim() || !email.trim()) {
-      toast.error('Please enter name and email');
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleEmailChange = (e) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+    
+    // Real-time email validation
+    if (newEmail && !validateEmail(newEmail)) {
+      setEmailError('Please enter a valid email address');
+    } else {
+      setEmailError('');
+    }
+  };
+
+  const handleNextStep = () => {
+    if (!name.trim()) {
+      toast.error('Please enter your name');
       return;
     }
-
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    
+    if (!email.trim()) {
+      toast.error('Please enter your email');
+      return;
+    }
+    
+    if (!validateEmail(email)) {
       toast.error('Please enter a valid email address');
+      setEmailError('Please enter a valid email address');
+      return;
+    }
+    
+    setStep(2);
+  };
+
+  const handleStart = async () => {
+    // Email already validated in previous step
+    if (!name.trim() || !email.trim()) {
+      toast.error('Please enter name and email');
       return;
     }
 
@@ -224,13 +256,13 @@ export default function Home() {
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleEmailChange}
                 placeholder="your@email.com"
                 style={{
                   width: '100%',
                   padding: '16px',
                   backgroundColor: 'rgba(255,255,255,0.1)',
-                  border: '1px solid rgba(255,255,255,0.2)',
+                  border: emailError ? '1px solid #ef4444' : '1px solid rgba(255,255,255,0.2)',
                   borderRadius: '12px',
                   color: '#fff',
                   fontSize: '16px',
@@ -239,6 +271,16 @@ export default function Home() {
                   backdropFilter: 'blur(10px)'
                 }}
               />
+              {emailError && (
+                <div style={{
+                  color: '#ef4444',
+                  fontSize: '12px',
+                  marginTop: '4px',
+                  fontWeight: 500
+                }}>
+                  {emailError}
+                </div>
+              )}
             </div>
 
             {/* Level Select */}
@@ -282,21 +324,25 @@ export default function Home() {
             </div>
 
             <button
-              onClick={() => name && email ? setStep(2) : toast.error('Fill all fields')}
+              onClick={handleNextStep}
+              disabled={!name.trim() || !email.trim() || emailError}
               style={{
                 width: '100%',
                 padding: '18px',
-                background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+                background: (!name.trim() || !email.trim() || emailError) 
+                  ? 'rgba(156, 163, 175, 0.5)' 
+                  : 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
                 border: 'none',
                 borderRadius: '12px',
                 color: '#fff',
                 fontSize: '16px',
                 fontWeight: 600,
-                cursor: 'pointer',
+                cursor: (!name.trim() || !email.trim() || emailError) ? 'not-allowed' : 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '8px'
+                gap: '8px',
+                opacity: (!name.trim() || !email.trim() || emailError) ? 0.6 : 1
               }}
             >
               Choose Mode <ChevronRight size={20} />
