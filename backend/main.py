@@ -26,9 +26,6 @@ from .schemas import (
 )
 from .ai_service import ai_service
 
-# Create tables
-Base.metadata.create_all(bind=engine)
-
 # Initialize FastAPI
 app = FastAPI(
     title="AI Speaking Partner API",
@@ -44,6 +41,18 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Create tables on startup instead of import
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database tables on app startup"""
+    try:
+        Base.metadata.create_all(bind=engine)
+        print("✅ Database tables created successfully")
+    except Exception as e:
+        print(f"❌ Database connection failed: {e}")
+        print(f"🔍 DATABASE_URL: {settings.DATABASE_URL[:50]}...")
+        raise
 
 # WebSocket connection manager
 class ConnectionManager:
