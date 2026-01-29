@@ -32,13 +32,6 @@ class SpeechService {
       console.warn('⚠️ iOS Safari has limited Web Speech API support');
     }
     
-    // Check for speech recognition support
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    this.isSupported = !!SpeechRecognition;
-    
-    // Store the recognition constructor
-    this.SpeechRecognition = SpeechRecognition;
-    
     // Track recognition attempts and results
     this.recognitionAttempts = 0;
     this.maxAttempts = 3;
