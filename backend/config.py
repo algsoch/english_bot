@@ -29,7 +29,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "default-secret-change-in-production"
     
     # CORS - now as a single string that we'll split
-    ALLOWED_ORIGINS: str
+    ALLOWED_ORIGINS: str = "http://localhost:5173,http://localhost:3000,https://english-bot-ouso.onrender.com" = "http://localhost:5173,http://localhost:3000,http://localhost:8000,https://english-bot-ouso.onrender.com" = "https://english-bot-ouso.onrender.com,http://localhost:5173,http://localhost:3000,http://localhost:8000"
     
     model_config = SettingsConfigDict(
         env_file=".env",
