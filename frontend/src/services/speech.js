@@ -8,10 +8,29 @@ class SpeechService {
     this.isDualMode = true;
     this.useSmartSwitching = true; // Automatically switch based on results
     
+    // MOBILE DETECTION
+    this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    this.isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    this.isAndroid = /Android/i.test(navigator.userAgent);
+    
+    console.log(`📱 Device: ${this.isMobile ? 'Mobile' : 'Desktop'}, iOS: ${this.isIOS}, Android: ${this.isAndroid}`);
+    
     // ECHO PREVENTION SYSTEM
     this.isAISpeaking = false; // Track when AI is speaking
     this.recognitionPaused = false; // Track recognition pause state
     this.pendingResume = null; // Timer for resuming recognition
+    
+    // Check for speech recognition support with mobile-specific checks
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    this.isSupported = !!SpeechRecognition;
+    
+    // Additional mobile checks
+    if (this.isMobile && !this.isSupported) {
+      console.warn('⚠️ Mobile browser does not support Web Speech API');
+    }
+    if (this.isIOS && this.isSupported) {
+      console.warn('⚠️ iOS Safari has limited Web Speech API support');
+    }
     
     // Check for speech recognition support
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -99,10 +118,34 @@ class SpeechService {
   async startRecognition(onResult, onEnd, onError) {
     console.log('🎤 Starting speech recognition...');
     
+    // Mobile-specific checks
+    if (this.isMobile) {
+      console.log('📱 Mobile device detected - using mobile-optimized settings');
+      if (this.isIOS) {
+        console.warn('⚠️ iOS detected - Web Speech API support is limited');
+      }
+      if (!window.location.protocol === 'https:' && window.location.hostname !== 'localhost') {
+        console.error('❌ HTTPS required for microphone access on mobile');
+        if (onError) onError('https-required');
+        return;
+      }
+    }
+    
     // Request microphone permission first
     try {
       console.log('🎤 Requesting microphone permission...');
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+          // Mobile-optimized audio constraints
+          ...(this.isMobile && {
+            sampleRate: 44100,
+            channelCount: 1
+          })
+        }
+      });
       console.log('✅ Microphone permission granted');
       // Stop the stream, we just needed permission
       stream.getTracks().forEach(track => track.stop());
@@ -434,6 +477,23 @@ class SpeechService {
     }
     
     return score;
+  }
+
+  // Mobile compatibility check
+  getMobileCompatibilityInfo() {
+    return {
+      isMobile: this.isMobile,
+      isIOS: this.isIOS,
+      isAndroid: this.isAndroid,
+      speechSupported: this.isSupported,
+      httpsRequired: window.location.protocol !== 'https:' && window.location.hostname !== 'localhost',
+      recommendedBrowser: this.isIOS ? 'Chrome or Firefox' : 'Chrome',
+      limitationsMessage: this.isIOS ? 
+        'iOS Safari has limited speech recognition support. Try Chrome or Firefox for better experience.' :
+        this.isAndroid ? 
+        'Ensure you\'re using Chrome for best speech recognition support.' :
+        'Use a modern browser with microphone access enabled.'
+    };
   }
 }
 
