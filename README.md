@@ -1,53 +1,281 @@
-# AI Speaking Partner - Advanced English Learning Platform
+# 🤖 English Bot - AI-Powered Conversation Practice
 
-🎯 **Free, Advanced, AI-Powered English Speaking Practice**
+An intelligent English conversation practice application that helps users improve their speaking skills through AI-powered interactions.
 
-Practice English conversation with an AI tutor powered by Ollama (local, 100% free). Perfect for improving speaking skills, grammar, vocabulary, and pronunciation.
+## 🎬 Demo Video
+📹 **[Watch Demo on YouTube](https://www.youtube.com/watch?v=tN8zLuT8uJ8)**
 
 ## ✨ Features
 
-- 🎤 **Voice Recognition** - Real-time speech-to-text using Web Speech API
-- 🔊 **Text-to-Speech** - Natural AI voice responses
+### 🎯 Core Functionality
+- 🎤 **Speech Recognition** - Real-time voice input with Web Speech API
+- 🔊 **Text-to-Speech** - Natural AI voice responses  
 - 💬 **Multiple Conversation Modes**:
-  - Free Talk
-  - Grammar Focus
-  - Vocabulary Building
-  - Pronunciation Practice
-  - Business English
-  - Travel English
-- 📊 **Progress Tracking** - Track your learning journey
-- 🎯 **AI Feedback** - Real-time corrections and suggestions
+  - Free Talk - Natural conversations
+  - Grammar Focus - Grammar correction and practice
+  - Vocabulary Building - Learn new words
+  - Pronunciation Practice - Improve accent
+  - Business English - Professional communication
+  - Travel English - Practical travel phrases
+- 🎭 **AI Personalities**: Choose between Teacher, Girlfriend, or Friend modes
+- 📊 **Progress Tracking** - Monitor your learning journey with detailed analytics
 - 📱 **Mobile Optimized** - PWA support for mobile devices
-- 🌐 **Share Online** - Can be deployed and shared
+
+### 🧠 AI Technology
+- **Environment Auto-Detection**: Automatically switches between:
+  - **Local Development**: Ollama (100% free, runs offline)
+  - **Production**: Groq API (fast cloud inference)
+- **Smart Responses**: Context-aware conversations with personality matching
+- **Learning Analytics**: Track improvement over time with detailed metrics
 
 ## 🛠️ Tech Stack
 
 **Backend:**
 - FastAPI (async Python web framework)
-- Ollama (local AI - llama3.1:8b)
-- PostgreSQL (database)
+- PostgreSQL (database with conversation history)
 - WebSocket (real-time communication)
+- AI Providers:
+  - Ollama (local AI - llama3.1:8b)
+  - Groq API (production - llama-3.3-70b-versatile)
 
 **Frontend:**
-- React + Vite
-- TailwindCSS (styling)
-- Framer Motion (animations)
-- Web Speech API (voice)
+- React 18 + Vite (modern frontend)
+- TailwindCSS (responsive styling) 
+- Framer Motion (smooth animations)
+- Web Speech API (voice recognition)
+- Zustand (state management)
+- Recharts (progress visualization)
 
-## 📋 Prerequisites
-
-1. **PostgreSQL** - Already installed ✅
-2. **Ollama** - Already installed with llama3.1:8b ✅
-3. **Python 3.8+**
-4. **Node.js 18+**
+**Database Schema:**
+- Users & Profiles
+- Conversation Sessions
+- Message History
+- Learning Progress Analytics
+- Feedback System
 
 ## 🚀 Quick Start
 
-### 1. Setup Database
+### Prerequisites
+- Python 3.8+ 
+- Node.js 18+
+- PostgreSQL
+- Ollama (for local) OR Groq API key (for cloud)
 
+### Installation
+
+1. **Clone Repository**
+```bash
+git clone https://github.com/algsoch/english_bot.git
+cd english_bot
+```
+
+2. **Backend Setup**
+```bash
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Environment setup
+cp .env.template .env
+# Edit .env with your settings
+```
+
+3. **Frontend Setup**  
+```bash
+cd frontend
+npm install
+cp .env.example .env
+# Configure frontend environment
+```
+
+4. **Database Setup**
 ```bash
 # Create database
 createdb englishbot
+
+# Run schema
+psql -d englishbot -f database/schema.sql
+```
+
+5. **AI Provider Setup**
+
+**Option A - Local (Free):**
+```bash
+# Install Ollama
+curl https://ollama.ai/install.sh | sh
+
+# Pull model
+ollama pull llama3.1:8b
+```
+
+**Option B - Cloud (Groq):**
+- Get API key from [Groq Console](https://console.groq.com/keys)
+- Add to `.env`: `GROQ_API_KEY=your-key-here`
+
+### Running the App
+
+**Start Backend:**
+```bash
+python run.py
+# OR: uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+**Start Frontend:**
+```bash
+cd frontend
+npm run dev
+```
+
+Visit: `http://localhost:5173`
+
+## 📁 Project Structure
+
+```
+english_bot/
+├── backend/                 # FastAPI Backend
+│   ├── ai_service.py       # AI provider management
+│   ├── config.py           # Environment configuration  
+│   ├── database.py         # Database connection
+│   ├── main.py             # FastAPI application
+│   ├── models.py           # SQLAlchemy models
+│   └── schemas.py          # Pydantic schemas
+├── frontend/               # React Frontend
+│   ├── src/
+│   │   ├── components/     # React components
+│   │   ├── pages/          # Page components
+│   │   ├── services/       # API & WebSocket
+│   │   └── store/          # State management
+│   └── public/             # Static assets
+├── database/
+│   └── schema.sql          # PostgreSQL schema
+├── .env.template           # Environment template
+├── requirements.txt        # Python dependencies
+└── README.md
+```
+
+## ⚙️ Configuration
+
+The app automatically detects environment and configures AI providers:
+
+### Local Development (Automatic)
+- Uses **Ollama** locally (free, private)
+- Local PostgreSQL database
+- Perfect for development and privacy
+
+### Production/Cloud (Automatic)  
+- Uses **Groq API** (fast, cloud-based)
+- Production PostgreSQL (Render/Railway)
+- Optimized for deployment
+
+### Environment Variables
+```env
+# Auto-detection
+ENVIRONMENT=development
+AI_PROVIDER=auto
+
+# Groq (Production)
+GROQ_API_KEY=your-api-key
+GROQ_MODEL=llama-3.3-70b-versatile
+
+# Ollama (Local)
+OLLAMA_HOST=http://localhost:11434
+OLLAMA_MODEL=llama3.1:8b
+
+# Database
+DATABASE_URL=postgresql://user:pass@localhost:5432/englishbot
+```
+
+## 🌍 Deployment
+
+### Render (Recommended)
+1. Fork this repository
+2. Create Web Service on Render
+3. Set environment variables:
+   - `ENVIRONMENT=production`
+   - `DATABASE_URL=your-postgres-url`
+   - `GROQ_API_KEY=your-api-key`
+4. Deploy automatically!
+
+### Local Docker
+```bash
+docker-compose up --build
+```
+
+## 🎮 How to Use
+
+### 1. Choose AI Personality
+- 👨‍🏫 **Teacher**: Professional, educational feedback
+- 💕 **Girlfriend**: Casual, friendly conversations
+- 👫 **Friend**: Relaxed, buddy-like chat
+
+### 2. Select Learning Mode
+- **Free Talk**: Natural conversation practice
+- **Grammar Focus**: Corrections and explanations
+- **Vocabulary**: Learn new words in context
+- **Pronunciation**: Accent and clarity improvement
+- **Business**: Professional communication
+- **Travel**: Practical phrases and situations
+
+### 3. Start Practicing
+- Click microphone for voice input
+- Type messages for text chat
+- Get real-time AI feedback
+- Track your progress over time
+
+## 📊 Features in Detail
+
+### Voice Recognition
+- Real-time speech-to-text
+- Multiple language support
+- Noise filtering and echo prevention
+- Mobile device compatibility
+
+### AI Responses  
+- Context-aware conversations
+- Personality-matched responses
+- Grammar corrections with explanations
+- Vocabulary suggestions and definitions
+
+### Progress Analytics
+- Conversation history tracking
+- Speaking time and accuracy metrics
+- Grammar improvement over time
+- Vocabulary growth measurement
+
+### Learning Modes
+- **Free Talk**: Natural conversation flow
+- **Grammar Focus**: Detailed corrections
+- **Vocabulary**: Word learning in context
+- **Pronunciation**: Accent improvement
+- **Business**: Professional scenarios
+- **Travel**: Practical situations
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create feature branch: `git checkout -b feature/amazing-feature`
+3. Commit changes: `git commit -m 'Add amazing feature'`
+4. Push branch: `git push origin feature/amazing-feature`
+5. Open Pull Request
+
+## 📝 License
+
+MIT License - feel free to use this project for learning and development.
+
+## 🙏 Acknowledgments
+
+- [FastAPI](https://fastapi.tiangolo.com/) - Modern Python web framework
+- [React](https://reactjs.org/) - Frontend library
+- [Ollama](https://ollama.ai/) - Local AI models
+- [Groq](https://groq.com/) - Fast AI inference
+- [PostgreSQL](https://www.postgresql.org/) - Reliable database
+
+---
+
+**🎯 Perfect for English learners who want to practice speaking with AI assistance!**
 
 # Import schema
 psql -d englishbot -f database/schema.sql
