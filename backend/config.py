@@ -19,14 +19,14 @@ class Settings(BaseSettings):
     GROQ_API_KEY: str = ""  # Can be empty for local development
     GROQ_MODEL: str
     
-    # Ollama (local development)
-    OLLAMA_HOST: str
-    OLLAMA_MODEL: str
+    # Ollama (local development only)
+    OLLAMA_HOST: str = "http://localhost:11434"
+    OLLAMA_MODEL: str = "llama3.1:8b"
     
     # App
-    APP_HOST: str
-    APP_PORT: int
-    SECRET_KEY: str
+    APP_HOST: str = "0.0.0.0" 
+    APP_PORT: int = 8000
+    SECRET_KEY: str = "default-secret-change-in-production"
     
     # CORS - now as a single string that we'll split
     ALLOWED_ORIGINS: str
