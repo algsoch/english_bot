@@ -3,13 +3,15 @@
 An intelligent English conversation practice application that helps users improve their speaking skills through AI-powered interactions.
 
 ## 🎬 Demo Video
+
 📹 **[Watch Demo on YouTube](https://www.youtube.com/watch?v=tN8zLuT8uJ8)**
 
 ## ✨ Features
 
 ### 🎯 Core Functionality
+
 - 🎤 **Speech Recognition** - Real-time voice input with Web Speech API
-- 🔊 **Text-to-Speech** - Natural AI voice responses  
+- 🔊 **Text-to-Speech** - Natural AI voice responses
 - 💬 **Multiple Conversation Modes**:
   - Free Talk - Natural conversations
   - Grammar Focus - Grammar correction and practice
@@ -22,6 +24,7 @@ An intelligent English conversation practice application that helps users improv
 - 📱 **Mobile Optimized** - PWA support for mobile devices
 
 ### 🧠 AI Technology
+
 - **Environment Auto-Detection**: Automatically switches between:
   - **Local Development**: Ollama (100% free, runs offline)
   - **Production**: Groq API (fast cloud inference)
@@ -31,6 +34,7 @@ An intelligent English conversation practice application that helps users improv
 ## 🛠️ Tech Stack
 
 **Backend:**
+
 - FastAPI (async Python web framework)
 - PostgreSQL (database with conversation history)
 - WebSocket (real-time communication)
@@ -39,14 +43,16 @@ An intelligent English conversation practice application that helps users improv
   - Groq API (production - llama-3.3-70b-versatile)
 
 **Frontend:**
+
 - React 18 + Vite (modern frontend)
-- TailwindCSS (responsive styling) 
+- TailwindCSS (responsive styling)
 - Framer Motion (smooth animations)
 - Web Speech API (voice recognition)
 - Zustand (state management)
 - Recharts (progress visualization)
 
 **Database Schema:**
+
 - Users & Profiles
 - Conversation Sessions
 - Message History
@@ -56,7 +62,8 @@ An intelligent English conversation practice application that helps users improv
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Python 3.8+ 
+
+- Python 3.8+
 - Node.js 18+
 - PostgreSQL
 - Ollama (for local) OR Groq API key (for cloud)
@@ -64,12 +71,14 @@ An intelligent English conversation practice application that helps users improv
 ### Installation
 
 1. **Clone Repository**
+
 ```bash
 git clone https://github.com/algsoch/english_bot.git
 cd english_bot
 ```
 
 2. **Backend Setup**
+
 ```bash
 # Create virtual environment
 python -m venv venv
@@ -86,7 +95,8 @@ cp .env.template .env
 python3 run.py
 ```
 
-3. **Frontend Setup**  
+3. **Frontend Setup**
+
 ```bash
 cd frontend
 npm install
@@ -95,6 +105,7 @@ cp .env.example .env
 ```
 
 4. **Database Setup**
+
 ```bash
 # Create database
 createdb englishbot
@@ -106,6 +117,7 @@ psql -d englishbot -f database/schema.sql
 5. **AI Provider Setup**
 
 **Option A - Local (Free):**
+
 ```bash
 # Install Ollama
 curl https://ollama.ai/install.sh | sh
@@ -115,12 +127,14 @@ ollama pull llama3.1:8b
 ```
 
 **Option B - Cloud (Groq):**
+
 - Get API key from [Groq Console](https://console.groq.com/keys)
 - Add to `.env`: `GROQ_API_KEY=your-key-here`
 
 ### Running the App
 
 **Start Backend:**
+
 ```bash
 # Activate virtual environment
 source venv/bin/activate  # Windows: venv\Scripts\activate
@@ -130,6 +144,7 @@ python3 run.py
 ```
 
 **Start Frontend:**
+
 ```bash
 cd frontend
 npm run dev
@@ -167,16 +182,19 @@ english_bot/
 The app automatically detects environment and configures AI providers:
 
 ### Local Development (Automatic)
+
 - Uses **Ollama** locally (free, private)
 - Local PostgreSQL database
 - Perfect for development and privacy
 
-### Production/Cloud (Automatic)  
+### Production/Cloud (Automatic)
+
 - Uses **Groq API** (fast, cloud-based)
 - Production PostgreSQL (Render/Railway)
 - Optimized for deployment
 
 ### Environment Variables
+
 ```env
 # Auto-detection
 ENVIRONMENT=development
@@ -197,6 +215,7 @@ DATABASE_URL=postgresql://user:pass@localhost:5432/englishbot
 ## 🌍 Deployment
 
 ### Render (Recommended)
+
 1. Fork this repository
 2. Create Web Service on Render
 3. Set environment variables:
@@ -206,6 +225,7 @@ DATABASE_URL=postgresql://user:pass@localhost:5432/englishbot
 4. Deploy automatically!
 
 ### Local Docker
+
 ```bash
 docker-compose up --build
 ```
@@ -213,11 +233,13 @@ docker-compose up --build
 ## 🎮 How to Use
 
 ### 1. Choose AI Personality
+
 - 👨‍🏫 **Teacher**: Professional, educational feedback
 - 💕 **Girlfriend**: Casual, friendly conversations
 - 👫 **Friend**: Relaxed, buddy-like chat
 
 ### 2. Select Learning Mode
+
 - **Free Talk**: Natural conversation practice
 - **Grammar Focus**: Corrections and explanations
 - **Vocabulary**: Learn new words in context
@@ -226,6 +248,7 @@ docker-compose up --build
 - **Travel**: Practical phrases and situations
 
 ### 3. Start Practicing
+
 - Click microphone for voice input
 - Type messages for text chat
 - Get real-time AI feedback
@@ -234,24 +257,28 @@ docker-compose up --build
 ## 📊 Features in Detail
 
 ### Voice Recognition
+
 - Real-time speech-to-text
 - Multiple language support
 - Noise filtering and echo prevention
 - Mobile device compatibility
 
-### AI Responses  
+### AI Responses
+
 - Context-aware conversations
 - Personality-matched responses
 - Grammar corrections with explanations
 - Vocabulary suggestions and definitions
 
 ### Progress Analytics
+
 - Conversation history tracking
 - Speaking time and accuracy metrics
 - Grammar improvement over time
 - Vocabulary growth measurement
 
 ### Learning Modes
+
 - **Free Talk**: Natural conversation flow
 - **Grammar Focus**: Detailed corrections
 - **Vocabulary**: Word learning in context
@@ -284,7 +311,9 @@ MIT License - feel free to use this project for learning and development.
 **🎯 Perfect for English learners who want to practice speaking with AI assistance!**
 
 # Import schema
+
 psql -d englishbot -f database/schema.sql
+
 ```
 
 ### 2. Configure Environment
@@ -346,14 +375,14 @@ Frontend will run on: http://localhost:5173
 
 ## 🎮 Conversation Modes
 
-| Mode | Description |
-|------|-------------|
-| **Free Talk** | Natural, flowing conversation with follow-up questions |
-| **Grammar Focus** | Specific grammar corrections with explanations |
-| **Vocabulary** | Learn new words and alternative expressions |
-| **Pronunciation** | Practice difficult words with phonetic guidance |
-| **Business English** | Professional scenarios (meetings, presentations) |
-| **Travel English** | Travel situations (airports, hotels, directions) |
+| Mode                       | Description                                            |
+| -------------------------- | ------------------------------------------------------ |
+| **Free Talk**        | Natural, flowing conversation with follow-up questions |
+| **Grammar Focus**    | Specific grammar corrections with explanations         |
+| **Vocabulary**       | Learn new words and alternative expressions            |
+| **Pronunciation**    | Practice difficult words with phonetic guidance        |
+| **Business English** | Professional scenarios (meetings, presentations)       |
+| **Travel English**   | Travel situations (airports, hotels, directions)       |
 
 ## 📱 Mobile Support
 
@@ -367,16 +396,19 @@ The app is a Progressive Web App (PWA):
 ## 🌐 Deploy Online (Free Options)
 
 ### Backend Options:
+
 - **Railway** (Free tier)
 - **Render** (Free tier)
 - **Fly.io** (Free tier)
 
 ### Frontend Options:
+
 - **Vercel** (Free, unlimited)
 - **Netlify** (Free tier)
 - **GitHub Pages** (Free)
 
 ### Database:
+
 - **Supabase** (Free PostgreSQL)
 - **ElephantSQL** (Free tier)
 - **Neon** (Free serverless Postgres)
@@ -386,6 +418,7 @@ The app is a Progressive Web App (PWA):
 ### Change AI Model
 
 Edit `.env`:
+
 ```bash
 OLLAMA_MODEL=llama3.1:8b  # or mistral, phi, etc.
 ```
@@ -410,6 +443,7 @@ Edit `frontend/src/services/speech.js` - modify rate, pitch, volume
 ## 🐛 Troubleshooting
 
 **Ollama not connecting:**
+
 ```bash
 # Check if Ollama is running
 ollama list
@@ -419,6 +453,7 @@ ollama serve
 ```
 
 **Database connection failed:**
+
 ```bash
 # Check PostgreSQL is running
 psql -l
@@ -427,6 +462,7 @@ psql -l
 ```
 
 **Speech recognition not working:**
+
 - Use Chrome/Edge (best support)
 - Allow microphone permissions
 - Check HTTPS in production
@@ -447,10 +483,7 @@ MIT License - Free to use and modify
 ## 🤝 Contributing
 
 Contributions welcome! Feel free to:
+
 - Report bugs
 - Suggest features
 - Submit pull requests
-
----
-
-**Built with ❤️ for English learners worldwide**
