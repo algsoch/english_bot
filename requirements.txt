@@ -1,0 +1,26 @@
+# FastAPI and async support
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+websockets==13.1
+
+# Database (use binary wheels for Python 3.13 compatibility)
+psycopg2-binary==2.9.10
+sqlalchemy==2.0.36
+asyncpg==0.30.0
+
+# Ollama
+ollama==0.4.4
+
+# Groq AI
+groq==0.11.0
+
+# Auth and security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.12
+
+# Utilities
+python-dotenv==1.0.1
+pydantic==2.10.3
+pydantic-settings==2.7.0
+email-validator==2.2.0
