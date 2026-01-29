@@ -124,9 +124,26 @@ class SpeechService {
       }
     }
     
-    // Request microphone permission first
+    // Check if permission is already granted first
     try {
-      console.log('🎤 Requesting microphone permission...');
+      console.log('🔍 Checking current microphone permission status...');
+      
+      // Check permission state if supported
+      if (navigator.permissions && navigator.permissions.query) {
+        const permissionStatus = await navigator.permissions.query({ name: 'microphone' });
+        console.log(`🎤 Permission status: ${permissionStatus.state}`);
+        
+        if (permissionStatus.state === 'granted') {
+          console.log('✅ Microphone permission already granted');
+        } else if (permissionStatus.state === 'denied') {
+          console.error('❌ Microphone permission denied - user needs to enable in browser settings');
+          if (onError) onError('permission-denied');
+          return;
+        }
+      }
+      
+      // Request microphone access (this will use existing permission if granted)
+      console.log('🎤 Accessing microphone...');
       const stream = await navigator.mediaDevices.getUserMedia({ 
         audio: {
           echoCancellation: true,
@@ -139,12 +156,22 @@ class SpeechService {
           })
         }
       });
-      console.log('✅ Microphone permission granted');
+      console.log('✅ Microphone access granted');
       // Stop the stream, we just needed permission
       stream.getTracks().forEach(track => track.stop());
     } catch (error) {
-      console.error('❌ Microphone permission denied:', error);
-      if (onError) onError('not-allowed');
+      console.error('❌ Microphone access failed:', error);
+      
+      if (error.name === 'NotAllowedError') {
+        console.error('❌ Permission denied by user');
+        if (onError) onError('permission-denied');
+      } else if (error.name === 'NotFoundError') {
+        console.error('❌ No microphone found');
+        if (onError) onError('no-microphone'); 
+      } else {
+        console.error('❌ Microphone error:', error.name);
+        if (onError) onError('microphone-error');
+      }
       return;
     }
     
@@ -470,6 +497,39 @@ class SpeechService {
     }
     
     return score;
+  }
+
+  // Check microphone permission status
+  async checkMicrophonePermission() {
+    try {
+      if (navigator.permissions && navigator.permissions.query) {
+        const permissionStatus = await navigator.permissions.query({ name: 'microphone' });
+        console.log(`🎤 Current permission: ${permissionStatus.state}`);
+        return {
+          state: permissionStatus.state,
+          granted: permissionStatus.state === 'granted',
+          denied: permissionStatus.state === 'denied',
+          prompt: permissionStatus.state === 'prompt'
+        };
+      } else {
+        // Fallback: try to access microphone to check permission
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          stream.getTracks().forEach(track => track.stop());
+          return { state: 'granted', granted: true, denied: false, prompt: false };
+        } catch (error) {
+          return { 
+            state: error.name === 'NotAllowedError' ? 'denied' : 'prompt', 
+            granted: false, 
+            denied: error.name === 'NotAllowedError',
+            prompt: error.name !== 'NotAllowedError'
+          };
+        }
+      }
+    } catch (error) {
+      console.error('❌ Permission check failed:', error);
+      return { state: 'unknown', granted: false, denied: false, prompt: true };
+    }
   }
 
   // Mobile compatibility check

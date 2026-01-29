@@ -244,7 +244,7 @@ export default function ChatInterface() {
     toast.info('Dual mode: Hindi + English recognition');
   };
 
-  const startListening = () => {
+  const startListening = async () => {
     if (!speechService.isSupported) {
       toast.error('Use Chrome, Edge, or Safari for voice');
       return;
@@ -258,16 +258,23 @@ export default function ChatInterface() {
 
     console.log('🎤 Starting microphone...');
 
-    navigator.mediaDevices?.getUserMedia({ audio: true })
-      .then(() => {
-        console.log('✅ Mic permission granted');
-        
-        if (!recognitionRef.current) {
-          recognitionRef.current = speechService.initRecognition();
-        }
+    // Check permission using speech service
+    try {
+      const permissionStatus = await speechService.checkMicrophonePermission();
+      
+      if (permissionStatus.denied) {
+        toast.error('Please enable microphone in browser settings');
+        return;
+      }
+      
+      console.log('✅ Mic permission checked');
+      
+      if (!recognitionRef.current) {
+        recognitionRef.current = speechService.initRecognition();
+      }
 
-        speechService.startRecognition(
-          ({ final, interim }) => {
+      speechService.startRecognition(
+        ({ final, interim }) => {
             // CRITICAL: Block ALL input while AI is speaking
             if (window.aiIsSpeaking || isSpeaking) {
               console.log('🚫 BLOCKED: AI is speaking, ignoring all mic input');
@@ -339,11 +346,18 @@ export default function ChatInterface() {
         setRecording(true);
         setIsConversationActive(true);
         toast.success('🎤 Listening! Speak now...');
-      })
-      .catch((err) => {
-        console.error('❌ Mic access denied:', err);
-        toast.error('Please allow microphone access to speak');
-      });
+    } catch (error) {
+      console.error('🚫 Microphone permission error:', error);
+      setIsListening(false);
+      
+      if (error.name === 'NotAllowedError') {
+        toast.error('Please enable microphone in browser settings');
+      } else if (error.name === 'NotFoundError') {
+        toast.error('No microphone found');
+      } else {
+        toast.error('Microphone access error');
+      }
+    }
   };
 
   const stopListening = () => {
