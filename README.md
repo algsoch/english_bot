@@ -81,6 +81,9 @@ pip install -r requirements.txt
 # Environment setup
 cp .env.template .env
 # Edit .env with your settings
+
+# Start the backend
+python3 run.py
 ```
 
 3. **Frontend Setup**  
@@ -119,8 +122,11 @@ ollama pull llama3.1:8b
 
 **Start Backend:**
 ```bash
-python run.py
-# OR: uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
+# Activate virtual environment
+source venv/bin/activate  # Windows: venv\Scripts\activate
+
+# Run the backend
+python3 run.py
 ```
 
 **Start Frontend:**
