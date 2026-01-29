@@ -467,15 +467,6 @@ psql -l
 - Allow microphone permissions
 - Check HTTPS in production
 
-## 🎯 Roadmap
-
-- [ ] Group conversations (you + friend + AI)
-- [ ] Voice analysis & scoring
-- [ ] Conversation topics library
-- [ ] Progress charts & statistics
-- [ ] Export conversation transcripts
-- [ ] Multiple languages support
-
 ## 📄 License
 
 MIT License - Free to use and modify
