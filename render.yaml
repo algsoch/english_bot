@@ -1,0 +1,33 @@
+version: 1
+services:
+  - type: static-site
+    name: englishbot-frontend
+    repo: https://github.com/algsoch/english_bot.git
+    branch: main
+    rootDir: ./frontend
+    buildCommand: npm run build
+    publishDir: ./dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://your-backend-service-name.onrender.com
+      - key: VITE_WS_URL  
+        value: wss://your-backend-service-name.onrender.com
+  
+  - type: web-service
+    name: englishbot-backend
+    repo: https://github.com/algsoch/english_bot.git
+    branch: main
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python run.py
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: AI_PROVIDER
+        value: auto
+      - key: GROQ_API_KEY
+        value: your-groq-api-key-here
+      - key: DATABASE_URL
+        value: your-postgres-connection-string
+      - key: ALLOWED_ORIGINS
+        value: https://your-frontend-service-name.onrender.com
